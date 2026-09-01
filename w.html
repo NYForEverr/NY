@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جدول Full Body – نسخة محسّنة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161e;
+    --card: #181c26;
+    --border: #252a38;
+    --accent: #e8c84a;
+    --accent2: #4a9ee8;
+    --accent3: #e84a6f;
+    --text: #e8eaf2;
+    --muted: #7a8099;
+    --green: #4ae896;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 32px 20px 60px;
+    background-image:
+      radial-gradient(ellipse 60% 40% at 80% 10%, rgba(232,200,74,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 10% 80%, rgba(74,158,232,0.05) 0%, transparent 60%);
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .header .tag {
+    display: inline-block;
+    background: rgba(232,200,74,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(232,200,74,0.25);
+    padding: 5px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: clamp(24px, 5vw, 38px);
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .header h1 span { color: var(--accent); }
+
+  .header p {
+    color: var(--muted);
+    font-size: 15px;
+    margin-top: 10px;
+  }
+
+  /* Stats bar */
+  .stats {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 44px;
+    animation: fadeDown 0.6s 0.1s ease both;
+  }
+
+  .stat-pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .stat-pill .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  /* Day cards */
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto 48px;
+  }
+
+  .day-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .day-card:nth-child(1) { animation-delay: 0.15s; }
+  .day-card:nth-child(2) { animation-delay: 0.25s; }
+  .day-card:nth-child(3) { animation-delay: 0.35s; }
+
+  .day-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .day-header .day-num {
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 1;
+    opacity: 0.12;
+    position: absolute;
+    left: 20px;
+  }
+
+  .day-title {
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .day-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .day-1 .day-header { border-top: 3px solid var(--accent); }
+  .day-1 .day-badge { background: rgba(232,200,74,0.15); color: var(--accent); }
+  .day-2 .day-header { border-top: 3px solid var(--accent2); }
+  .day-2 .day-badge { background: rgba(74,158,232,0.15); color: var(--accent2); }
+  .day-3 .day-header { border-top: 3px solid var(--green); }
+  .day-3 .day-badge { background: rgba(74,232,150,0.15); color: var(--green); }
+
+  .day-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 12px 24px;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .meta-chip {
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3px 10px;
+    font-weight: 600;
+  }
+
+  /* Table */
+  .ex-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .ex-table thead tr {
+    background: rgba(255,255,255,0.03);
+  }
+
+  .ex-table th {
+    padding: 10px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-align: right;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ex-table td {
+    padding: 16px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: middle;
+  }
+
+  .ex-table tr:last-child td { border-bottom: none; }
+
+  .ex-table tr:hover td { background: rgba(255,255,255,0.025); }
+
+  .muscle-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 6px;
+  }
+
+  /* muscle color codes */
+  .m-chest { background: rgba(232,74,111,0.15); color: #e84a6f; }
+  .m-back  { background: rgba(74,158,232,0.15); color: #4a9ee8; }
+  .m-legs  { background: rgba(74,232,150,0.15); color: #4ae896; }
+  .m-shoulder { background: rgba(232,200,74,0.15); color: #e8c84a; }
+  .m-bicep { background: rgba(180,74,232,0.15); color: #b44ae8; }
+  .m-tricep { background: rgba(232,140,74,0.15); color: #e88c4a; }
+  .m-abs   { background: rgba(74,232,220,0.15); color: #4ae8dc; }
+  .m-trap  { background: rgba(200,232,74,0.15); color: #c8e84a; }
+
+  .sets-reps {
+    font-weight: 600;
+    font-size: 12.5px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .sets-reps .sets { color: var(--accent); font-weight: 800; font-size: 14px; margin-left: 4px; }
+
+  .ex-name {
+    font-weight: 600;
+  }
+
+  /* Section divider inside table */
+  .section-row td {
+    padding: 6px 16px 4px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    background: rgba(255,255,255,0.015);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  /* Notes */
+  .notes-section {
+    max-width: 1100px;
+    margin: 0 auto 40px;
+    animation: fadeUp 0.5s 0.5s ease both;
+  }
+
+  .notes-section h3 {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+
+  .note-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .note-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .note-card h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--accent);
+  }
+
+  .note-card p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 20px 10px 40px; }
+    .header { margin-bottom: 32px; }
+    .header p { font-size: 13px; }
+    .stats { gap: 8px; margin-bottom: 28px; }
+    .stat-pill { padding: 8px 14px; font-size: 11.5px; }
+    .reset-bar { margin: -14px auto 28px; }
+    .days-grid { grid-template-columns: 1fr; gap: 16px; }
+    .day-header { padding: 16px 14px 12px; }
+    .day-title { font-size: 16px; }
+    .day-badge { font-size: 10px; padding: 3px 9px; }
+    .day-meta { padding: 10px 14px; gap: 6px; }
+    .meta-chip { font-size: 10px; padding: 3px 8px; }
+    .ex-table th, .ex-table td { padding: 13px 6px; font-size: 12px; }
+    .ex-table th { font-size: 9.5px; }
+    .muscle-tag { font-size: 9.5px; padding: 2px 6px; white-space: nowrap; }
+    .ex-name { font-size: 12px; }
+    .sets-reps { font-size: 12px; }
+    .counter { flex-wrap: nowrap; gap: 3px; }
+    .ctr-btn { width: 22px; height: 22px; font-size: 13px; border-radius: 6px; }
+    .ctr-val { font-size: 13px; min-width: 12px; }
+    .ctr-target { font-size: 9.5px; }
+    .notes-grid { grid-template-columns: 1fr; }
+    .vol-label { min-width: 90px; }
+    .vol-breakdown { font-size: 9px; }
+  }
+
+  @media (max-width: 380px) {
+    .ex-table th, .ex-table td { padding: 11px 4px; }
+    .ctr-btn { width: 20px; height: 20px; }
+  }
+
+  /* Counter widget */
+  .counter {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .ctr-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+
+  .ctr-btn:active { transform: scale(0.9); }
+
+  .ctr-minus:hover { background: rgba(232,74,111,0.15); border-color: #e84a6f; }
+  .ctr-plus:hover { background: rgba(74,232,150,0.15); border-color: #4ae896; }
+
+  .ctr-val {
+    font-weight: 800;
+    font-size: 14px;
+    min-width: 14px;
+    text-align: center;
+    color: var(--text);
+  }
+
+  .ctr-target {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .counter.done .ctr-val { color: var(--green); }
+  .counter.done .ctr-target { color: var(--green); }
+
+  .counter.over .ctr-val { color: var(--accent); }
+  .counter.over .ctr-target { color: var(--accent); }
+
+  .reset-bar {
+    max-width: 1100px;
+    margin: -24px auto 40px;
+    text-align: center;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .reset-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Cairo', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .reset-btn:hover { color: var(--accent3); border-color: var(--accent3); }
+
+  /* Day toggle (last-played) */
+  .day-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .day-toggle {
+    position: relative;
+    display: inline-block;
+    width: 38px;
+    height: 22px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .day-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .day-toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .day-toggle-slider::before {
+    content: "";
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    top: 2px;
+    background: var(--muted);
+    border-radius: 50%;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .day-toggle input:checked + .day-toggle-slider {
+    background: rgba(74,232,150,0.18);
+    border-color: var(--green);
+  }
+
+  .day-toggle input:checked + .day-toggle-slider::before {
+    transform: translateX(16px);
+    background: var(--green);
+  }
+
+  .day-card.active-day {
+    box-shadow: 0 0 0 2px var(--green), 0 8px 24px rgba(74,232,150,0.12);
+  }
+
+  .last-date {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--green);
+    margin-top: 6px;
+    display: none;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .last-date.show { display: flex; }
+
+  /* Play counters section */
+  .play-counters {
+    max-width: 1100px;
+    margin: 0 auto 48px;
+    animation: fadeUp 0.5s 0.55s ease both;
+  }
+
+  .play-counters h3 {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .play-counters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .play-counter-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 16px;
+    text-align: center;
+    border-top: 3px solid var(--border);
+  }
+
+  .play-counter-card .pc-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .play-counter-card .pc-value {
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .play-counter-card .pc-value span {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  .play-counter-card.pc-1 { border-top-color: var(--accent); }
+  .play-counter-card.pc-2 { border-top-color: var(--accent2); }
+  .play-counter-card.pc-3 { border-top-color: var(--green); }
+  .play-counter-card.pc-total {
+    background: linear-gradient(145deg, rgba(232,200,74,0.08), rgba(74,158,232,0.08));
+    border-top-color: var(--accent3);
+  }
+  .play-counter-card.pc-total .pc-value { color: var(--accent3); }
+
+  /* RDL / Deadlift last-time tracker */
+  .hinge-label {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-top: 8px;
+    margin-bottom: 4px;
+  }
+
+  .hinge-toggle {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .hinge-btn {
+    font-family: 'Cairo', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .hinge-btn:hover { border-color: var(--accent2); }
+
+  .hinge-btn.active {
+    background: rgba(74,232,150,0.15);
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  /* Completed exercise row */
+  .ex-table tr.row-done {
+    opacity: 0.4;
+    transition: opacity 0.25s ease;
+  }
+
+  .ex-table tr.row-done .ex-name {
+    text-decoration: line-through;
+    text-decoration-color: var(--green);
+  }
+
+  .ex-table tr.row-done .muscle-tag {
+    text-decoration: line-through;
+  }
+
+  /* Max weight input (sits under exercise name) */
+  .weight-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .weight-input {
+    width: 64px;
+    max-width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    padding: 5px 4px;
+    -moz-appearance: textfield;
+  }
+
+  .weight-input::-webkit-outer-spin-button,
+  .weight-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .weight-input:focus {
+    outline: none;
+    border-color: var(--accent2);
+    background: rgba(74,158,232,0.08);
+  }
+
+  .weight-input::placeholder {
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 10.5px;
+  }
+
+  .weight-unit {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 600px) {
+    .weight-input { width: 54px; font-size: 11px; padding: 4px 3px; }
+    .weight-input::placeholder { font-size: 9px; }
+    .weight-unit { font-size: 9px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="tag">🏋️ FULL BODY · 3 أيام</div>
+  <h1>الجدول المحسّن<br><span>Full Body Moderate</span></h1>
+  <p>RPE 7–8 · تكرار العضلة 2–3× أسبوعياً · بدون إجهاد زائد</p>
+</div>
+
+<div class="stats">
+  <div class="stat-pill"><span class="dot" style="background:#e8c84a"></span> اليوم 1 — 8 تمارين · ~23 سيت</div>
+  <div class="stat-pill"><span class="dot" style="background:#4a9ee8"></span> اليوم 2 — 9 تمارين · ~25 سيت</div>
+  <div class="stat-pill"><span class="dot" style="background:#4ae896"></span> اليوم 3 — 8 تمارين · ~20 سيت</div>
+</div>
+
+<div class="reset-bar">
+  <button class="reset-btn" onclick="resetAllCounters()">↺ تصفير كل العدادات</button>
+  <button class="reset-btn" onclick="exportData()">⬇ تصدير البيانات</button>
+  <button class="reset-btn" onclick="document.getElementById('import-file-input').click()">⬆ استيراد البيانات</button>
+  <input type="file" id="import-file-input" accept="application/json" style="display:none" onchange="importData(this.files[0])">
+</div>
+
+<div class="days-grid">
+
+  <!-- DAY 1 -->
+  <div class="day-card day-1" id="day-card-1">
+    <div class="day-header" style="position:relative">
+      <div>
+        <div class="day-title">اليوم الأول</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px">الصدر · الظهر · الرجل · الصغار</div>
+        <div class="last-date" id="last-date-1"></div>
+      </div>
+      <div class="day-header-right">
+        <span class="day-badge">Push + Pull + Legs</span>
+        <label class="day-toggle" title="آخر يوم اتلعب">
+          <input type="checkbox" class="day-toggle-input" data-day="1" onchange="toggleDay(1, this)">
+          <span class="day-toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+    <div class="day-meta">
+      <span class="meta-chip">⏱ 60–70 دقيقة</span>
+      <span class="meta-chip">🎯 RPE 7–8</span>
+      <span class="meta-chip">💪 Compound أولاً</span>
+    </div>
+    <table class="ex-table">
+      <thead>
+        <tr>
+          <th>العضلة</th>
+          <th>التمرين</th>
+          <th>Sets × Reps</th>
+          <th>المجاميع</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="section-row"><td colspan="3">الصدر</td></tr>
+        <tr>
+          <td><span class="muscle-tag m-chest">صدر</span></td>
+          <td class="ex-name">Incline DB Press
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-1" data-key="ex-1" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-1', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">4</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-1" data-target="4">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-1', -1, 4)">−</button>
+              <span class="ctr-val" id="val-ex-1">0</span><span class="ctr-target">/4</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-1', 1, 4)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-chest">صدر</span></td>
+          <td class="ex-name">جهاز صدر (شحاتة)
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-2" data-key="ex-2" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-2', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-2" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-2', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-2">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-2', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="section-row"><td colspan="3">الظهر</td></tr>
+        <tr>
+          <td><span class="muscle-tag m-back">ظهر</span></td>
+          <td class="ex-name">تي بار رو
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-3" data-key="ex-3" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-3', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">4</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-3" data-target="4">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-3', -1, 4)">−</button>
+              <span class="ctr-val" id="val-ex-3">0</span><span class="ctr-target">/4</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-3', 1, 4)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-back">ظهر</span></td>
+          <td class="ex-name">Lat Pulldown
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-4" data-key="ex-4" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-4', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-4" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-4', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-4">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-4', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="section-row"><td colspan="3">الرجل</td></tr>
+        <tr>
+          <td><span class="muscle-tag m-legs">رجل</span></td>
+          <td class="ex-name">Leg Press (دفع أرجل عادي)
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-5" data-key="ex-5" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-5', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">4</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-5" data-target="4">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-5', -1, 4)">−</button>
+              <span class="ctr-val" id="val-ex-5">0</span><span class="ctr-target">/4</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-5', 1, 4)">+</button>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="section-row"><td colspan="3">العضلات الصغيرة</td></tr>
+        <tr>
+          <td><span class="muscle-tag m-shoulder">كتف</span></td>
+          <td class="ex-name">رفرفة جانبي
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-6" data-key="ex-6" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-6', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-6" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-6', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-6">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-6', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-bicep">باي</span></td>
+          <td class="ex-name">Preacher Curl
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-7" data-key="ex-7" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-7', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-7" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-7', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-7">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-7', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-tricep">تراي</span></td>
+          <td class="ex-name">Cable Pushdown (V-Bar)
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-8" data-key="ex-8" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-8', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">4</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-8" data-target="4">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-8', -1, 4)">−</button>
+              <span class="ctr-val" id="val-ex-8">0</span><span class="ctr-target">/4</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-8', 1, 4)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-abs">بطن</span></td>
+          <td class="ex-name">Cable Crunch
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-9" data-key="ex-9" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-9', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-9" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-9', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-9">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-9', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="day-card day-2" id="day-card-2">
+    <div class="day-header">
+      <div>
+        <div class="day-title">اليوم الثاني</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px">الصدر · الظهر · الرجل · الصغار</div>
+        <div class="last-date" id="last-date-2"></div>
+      </div>
+      <div class="day-header-right">
+        <span class="day-badge">Isolation Focus</span>
+        <label class="day-toggle" title="آخر يوم اتلعب">
+          <input type="checkbox" class="day-toggle-input" data-day="2" onchange="toggleDay(2, this)">
+          <span class="day-toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+    <div class="day-meta">
+      <span class="meta-chip">⏱ 65–75 دقيقة</span>
+      <span class="meta-chip">🎯 RPE 7–8</span>
+      <span class="meta-chip">🔁 Isolation</span>
+    </div>
+    <table class="ex-table">
+      <thead>
+        <tr>
+          <th>العضلة</th>
+          <th>التمرين</th>
+          <th>Sets × Reps</th>
+          <th>المجاميع</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="section-row"><td colspan="3">الصدر</td></tr>
+        <tr>
+          <td><span class="muscle-tag m-chest">صدر</span></td>
+          <td class="ex-name">تفتيح فراشة
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-10" data-key="ex-10" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-10', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-10" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-10', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-10">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-10', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-chest">صدر</span></td>
+          <td class="ex-name">كابل من فوق لتحت
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-11" data-key="ex-11" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-11', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-11" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-11', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-11">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-11', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="section-row"><td colspan="3">الظهر</td></tr>
+        <tr>
+          <td><span class="muscle-tag m-back">ظهر</span></td>
+          <td class="ex-name">سحب جالس ضيق
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-12" data-key="ex-12" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-12', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">4</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-12" data-target="4">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-12', -1, 4)">−</button>
+              <span class="ctr-val" id="val-ex-12">0</span><span class="ctr-target">/4</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-12', 1, 4)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-back">ظهر</span></td>
+          <td class="ex-name">Pullover كابل
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-13" data-key="ex-13" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-13', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-13" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-13', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-13">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-13', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="section-row"><td colspan="3">الرجل</td></tr>
+        <tr>
+          <td><span class="muscle-tag m-legs">رجل</span></td>
+          <td class="ex-name">
+            RDL / Deadlift <span style="font-size:10px;color:var(--muted);font-weight:600;">(أسبوع بالتناوب)</span>
+            <div class="hinge-label">آخر مرة عملت:</div>
+            <div class="hinge-toggle" data-key="hinge-day2-ex14">
+              <button class="hinge-btn" data-value="rdl" onclick="setHingeChoice('hinge-day2-ex14','rdl',this)">RDL</button>
+              <button class="hinge-btn" data-value="deadlift" onclick="setHingeChoice('hinge-day2-ex14','deadlift',this)">Deadlift عادي</button>
+            </div>
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-14" data-key="ex-14" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-14', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">4</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-14" data-target="4">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-14', -1, 4)">−</button>
+              <span class="ctr-val" id="val-ex-14">0</span><span class="ctr-target">/4</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-14', 1, 4)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-legs">رجل</span></td>
+          <td class="ex-name">Leg Curl
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-15" data-key="ex-15" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-15', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-15" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-15', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-15">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-15', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="section-row"><td colspan="3">العضلات الصغيرة</td></tr>
+        <tr>
+          <td><span class="muscle-tag m-shoulder">كتف خلفي</span></td>
+          <td class="ex-name">جهاز الخلفيات
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-16" data-key="ex-16" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-16', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-16" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-16', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-16">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-16', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-bicep">باي</span></td>
+          <td class="ex-name">دمبل تبادل
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-17" data-key="ex-17" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-17', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-17" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-17', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-17">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-17', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-tricep">تراي</span></td>
+          <td class="ex-name">Overhead Tricep Extension
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-18" data-key="ex-18" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-18', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">4</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-18" data-target="4">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-18', -1, 4)">−</button>
+              <span class="ctr-val" id="val-ex-18">0</span><span class="ctr-target">/4</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-18', 1, 4)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-abs">بطن</span></td>
+          <td class="ex-name">Leg Raises
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-19" data-key="ex-19" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-19', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-19" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-19', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-19">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-19', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day-card day-3" id="day-card-3">
+    <div class="day-header">
+      <div>
+        <div class="day-title">اليوم الثالث</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px">الرجل كاملة · الكتف · الصدر/الظهر خفيف · الصغار</div>
+        <div class="last-date" id="last-date-3"></div>
+      </div>
+      <div class="day-header-right">
+        <span class="day-badge">Legs + Shoulders</span>
+        <label class="day-toggle" title="آخر يوم اتلعب">
+          <input type="checkbox" class="day-toggle-input" data-day="3" onchange="toggleDay(3, this)">
+          <span class="day-toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+    <div class="day-meta">
+      <span class="meta-chip">⏱ 60–70 دقيقة</span>
+      <span class="meta-chip">🎯 RPE 7</span>
+      <span class="meta-chip">🦵 رجل محورية</span>
+    </div>
+    <table class="ex-table">
+      <thead>
+        <tr>
+          <th>العضلة</th>
+          <th>التمرين</th>
+          <th>Sets × Reps</th>
+          <th>المجاميع</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="section-row"><td colspan="3">الرجل – مركّب أولاً ✅</td></tr>
+        <tr>
+          <td><span class="muscle-tag m-legs">رجل</span></td>
+          <td class="ex-name">Back Squat (سكوات خلفي)
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-20" data-key="ex-20" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-20', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">4</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-20" data-target="4">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-20', -1, 4)">−</button>
+              <span class="ctr-val" id="val-ex-20">0</span><span class="ctr-target">/4</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-20', 1, 4)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-legs">رجل</span></td>
+          <td class="ex-name">Leg Extension
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-21" data-key="ex-21" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-21', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-21" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-21', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-21">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-21', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-legs">رجل</span></td>
+          <td class="ex-name">Calf Raises
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-22" data-key="ex-22" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-22', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">4</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-22" data-target="4">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-22', -1, 4)">−</button>
+              <span class="ctr-val" id="val-ex-22">0</span><span class="ctr-target">/4</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-22', 1, 4)">+</button>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="section-row"><td colspan="3">الكتف – محوري في هذا اليوم ✅</td></tr>
+        <tr>
+          <td><span class="muscle-tag m-shoulder">كتف</span></td>
+          <td class="ex-name">ضغط أكتاف (DB / Machine)
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-23" data-key="ex-23" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-23', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-23" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-23', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-23">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-23', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-shoulder">كتف جانبي</span></td>
+          <td class="ex-name">رفرفة جانبي
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-24" data-key="ex-24" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-24', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-24" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-24', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-24">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-24', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="section-row"><td colspan="3">الصدر والظهر – خفيف للإغلاق</td></tr>
+        <tr>
+          <td><span class="muscle-tag m-chest">صدر</span></td>
+          <td class="ex-name">Dips (متوازي)
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-25" data-key="ex-25" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-25', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-25" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-25', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-25">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-25', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-back">ظهر</span></td>
+          <td class="ex-name">Hyperextension
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-26" data-key="ex-26" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-26', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-26" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-26', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-26">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-26', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="section-row"><td colspan="3">العضلات الصغيرة</td></tr>
+        <tr>
+          <td><span class="muscle-tag m-trap">ترابيس</span></td>
+          <td class="ex-name">جهاز ترابيس / Shrugs
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-27" data-key="ex-27" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-27', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">4</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-27" data-target="4">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-27', -1, 4)">−</button>
+              <span class="ctr-val" id="val-ex-27">0</span><span class="ctr-target">/4</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-27', 1, 4)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-bicep">باي</span></td>
+          <td class="ex-name">Hammer Curl
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-28" data-key="ex-28" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-28', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-28" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-28', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-28">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-28', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="muscle-tag m-abs">بطن</span></td>
+          <td class="ex-name">Cable Crunch / Mix
+              <div class="weight-wrap">
+                <input type="number" class="weight-input" id="weight-ex-29" data-key="ex-29" placeholder="أقصى وزن" inputmode="decimal" step="0.5" min="0" oninput="saveWeight('ex-29', this.value)">
+                <span class="weight-unit">كجم</span>
+              </div>
+            </td>
+          <td><div class="sets-reps"><span class="sets">3</span> سيت</div></td>
+          <td>
+            <div class="counter" data-key="ex-29" data-target="3">
+              <button class="ctr-btn ctr-minus" onclick="changeCounter('ex-29', -1, 3)">−</button>
+              <span class="ctr-val" id="val-ex-29">0</span><span class="ctr-target">/3</span>
+              <button class="ctr-btn ctr-plus" onclick="changeCounter('ex-29', 1, 3)">+</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Notes -->
+<div class="notes-section">
+  <h3>✅ ملاحظات البرنامج</h3>
+  <div class="notes-grid">
+    <div class="note-card">
+      <div class="note-icon">⚖️</div>
+      <div>
+        <h4>حجم متوازن</h4>
+        <p>كل يوم بين 19–22 سيت فعّال، مثالي للـ Full Body دون إجهاد زائد.</p>
+      </div>
+    </div>
+    <div class="note-card">
+      <div class="note-icon">🦵</div>
+      <div>
+        <h4>الرجل محوّر</h4>
+        <p>اليوم 3 يبدأ بـ Back Squat كحركة مركّبة للرجل، بدل Leg Extension فقط.</p>
+      </div>
+    </div>
+    <div class="note-card">
+      <div class="note-icon">🔄</div>
+      <div>
+        <h4>Overlap الكتف حُلّ</h4>
+        <p>ضغط الأكتاف نُقل لليوم 3، بعيداً عن صدر اليوم 1 واليوم 2 لضمان استشفاء الأمامي.</p>
+      </div>
+    </div>
+    <div class="note-card">
+      <div class="note-icon">📊</div>
+      <div>
+        <h4>تكرار العضلات</h4>
+        <p>الصدر، الظهر، الباي، والتراي كلهم يُشتغل عليهم 2–3 مرات أسبوعياً للبناء المثالي.</p>
+      </div>
+    </div>
+    <div class="note-card">
+      <div class="note-icon">🛌</div>
+      <div>
+        <h4>الراحة بين الجلسات</h4>
+        <p>خذ يوم راحة على الأقل بين كل جلسة. مثال: الأحد، الثلاثاء، الخميس.</p>
+      </div>
+    </div>
+    <div class="note-card">
+      <div class="note-icon">📈</div>
+      <div>
+        <h4>Progressive Overload</h4>
+        <p>زد الوزن أو التكرارات كل 1–2 أسبوع تدريجياً للحفاظ على نمو القوة.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Total Volume -->
+<div class="notes-section" style="margin-top:48px;">
+  <h3>📊 التوتال فوليوم الأسبوعي – لكل عضلة</h3>
+
+  <div style="max-width:700px;margin:0 auto;">
+
+    <!-- Chest -->
+    <div class="vol-row">
+      <div class="vol-label">
+        <span class="muscle-tag m-chest" style="font-size:13px;padding:4px 12px;">صدر</span>
+        <span class="vol-breakdown">د1: 4+3 · د2: 3+3 · د3: 3</span>
+      </div>
+      <div class="vol-bar-wrap">
+        <div class="vol-bar" style="width:76%;background:#e84a6f;"></div>
+      </div>
+      <div class="vol-num" style="color:#e84a6f;">16 سيت</div>
+    </div>
+
+    <!-- Back -->
+    <div class="vol-row">
+      <div class="vol-label">
+        <span class="muscle-tag m-back" style="font-size:13px;padding:4px 12px;">ظهر</span>
+        <span class="vol-breakdown">د1: 4+3 · د2: 4+3 · د3: 3</span>
+      </div>
+      <div class="vol-bar-wrap">
+        <div class="vol-bar" style="width:81%;background:#4a9ee8;"></div>
+      </div>
+      <div class="vol-num" style="color:#4a9ee8;">17 سيت</div>
+    </div>
+
+    <!-- Legs -->
+    <div class="vol-row">
+      <div class="vol-label">
+        <span class="muscle-tag m-legs" style="font-size:13px;padding:4px 12px;">رجل</span>
+        <span class="vol-breakdown">د1: 4 · د2: 4+3 · د3: 4+3+4</span>
+      </div>
+      <div class="vol-bar-wrap">
+        <div class="vol-bar" style="width:86%;background:#4ae896;"></div>
+      </div>
+      <div class="vol-num" style="color:#4ae896;">18 سيت</div>
+    </div>
+
+    <!-- Shoulders -->
+    <div class="vol-row">
+      <div class="vol-label">
+        <span class="muscle-tag m-shoulder" style="font-size:13px;padding:4px 12px;">كتف</span>
+        <span class="vol-breakdown">د1: 3 جانبي · د2: 3 خلفي · د3: 3+3</span>
+      </div>
+      <div class="vol-bar-wrap">
+        <div class="vol-bar" style="width:57%;background:#e8c84a;"></div>
+      </div>
+      <div class="vol-num" style="color:#e8c84a;">12 سيت</div>
+    </div>
+
+    <!-- Bicep -->
+    <div class="vol-row">
+      <div class="vol-label">
+        <span class="muscle-tag m-bicep" style="font-size:13px;padding:4px 12px;">باي</span>
+        <span class="vol-breakdown">د1: 3 · د2: 3 · د3: 3</span>
+      </div>
+      <div class="vol-bar-wrap">
+        <div class="vol-bar" style="width:43%;background:#b44ae8;"></div>
+      </div>
+      <div class="vol-num" style="color:#b44ae8;">9 سيت</div>
+    </div>
+
+    <!-- Tricep -->
+    <div class="vol-row">
+      <div class="vol-label">
+        <span class="muscle-tag m-tricep" style="font-size:13px;padding:4px 12px;">تراي</span>
+        <span class="vol-breakdown">د1: 4 Pushdown · د2: 4 Overhead</span>
+      </div>
+      <div class="vol-bar-wrap">
+        <div class="vol-bar" style="width:38%;background:#e88c4a;"></div>
+      </div>
+      <div class="vol-num" style="color:#e88c4a;">8 سيت</div>
+    </div>
+
+    <!-- Traps -->
+    <div class="vol-row">
+      <div class="vol-label">
+        <span class="muscle-tag m-trap" style="font-size:13px;padding:4px 12px;">ترابيس</span>
+        <span class="vol-breakdown">د3: 4 Shrugs</span>
+      </div>
+      <div class="vol-bar-wrap">
+        <div class="vol-bar" style="width:19%;background:#c8e84a;"></div>
+      </div>
+      <div class="vol-num" style="color:#c8e84a;">4 سيت</div>
+    </div>
+
+    <!-- Abs -->
+    <div class="vol-row">
+      <div class="vol-label">
+        <span class="muscle-tag m-abs" style="font-size:13px;padding:4px 12px;">بطن</span>
+        <span class="vol-breakdown">د1: 3 · د2: 3 · د3: 3</span>
+      </div>
+      <div class="vol-bar-wrap">
+        <div class="vol-bar" style="width:43%;background:#4ae8dc;"></div>
+      </div>
+      <div class="vol-num" style="color:#4ae8dc;">9 سيت</div>
+    </div>
+
+    <!-- Range note -->
+    <div style="margin-top:20px;padding:14px 20px;background:var(--card);border:1px solid var(--border);border-radius:14px;font-size:12px;color:var(--muted);line-height:1.8;text-align:center;">
+      🎯 النطاق العلمي الموصى به أسبوعياً:
+      <strong style="color:var(--text);">العضلات الكبيرة 10–20 سيت</strong> ·
+      <strong style="color:var(--text);">العضلات الصغيرة 6–14 سيت</strong>
+      — كل العضلات ضمن النطاق المثالي ✅
+    </div>
+  </div>
+</div>
+
+<style>
+  .vol-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .vol-label {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 120px;
+    flex-shrink: 0;
+  }
+  .vol-breakdown {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 600;
+    padding-right: 4px;
+  }
+  .vol-bar-wrap {
+    flex: 1;
+    height: 10px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .vol-bar {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 1s ease;
+    opacity: 0.85;
+  }
+  .vol-num {
+    font-size: 14px;
+    font-weight: 800;
+    min-width: 52px;
+    text-align: left;
+    flex-shrink: 0;
+  }
+</style>
+
+<div class="play-counters">
+  <h3>📅 عدد مرات اللعب</h3>
+  <div class="play-counters-grid">
+    <div class="play-counter-card pc-1">
+      <div class="pc-label">اليوم الأول</div>
+      <div class="pc-value"><span id="pc-1">0</span> <span>مرة</span></div>
+    </div>
+    <div class="play-counter-card pc-2">
+      <div class="pc-label">اليوم الثاني</div>
+      <div class="pc-value"><span id="pc-2">0</span> <span>مرة</span></div>
+    </div>
+    <div class="play-counter-card pc-3">
+      <div class="pc-label">اليوم الثالث</div>
+      <div class="pc-value"><span id="pc-3">0</span> <span>مرة</span></div>
+    </div>
+    <div class="play-counter-card pc-total">
+      <div class="pc-label">الإجمالي</div>
+      <div class="pc-value"><span id="pc-total">0</span> <span>مرة</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'workout-set-counters';
+
+  function loadCounters() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveCounters(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function renderCounter(key, value, target) {
+    const valEl = document.getElementById('val-' + key);
+    if (!valEl) return;
+    valEl.textContent = value;
+    const wrap = valEl.closest('.counter');
+    wrap.classList.remove('done', 'over');
+    if (value > target) {
+      wrap.classList.add('over');
+    } else if (value === target && target > 0) {
+      wrap.classList.add('done');
+    }
+    const row = valEl.closest('tr');
+    if (row) {
+      row.classList.toggle('row-done', target > 0 && value >= target);
+    }
+  }
+
+  function changeCounter(key, delta, target) {
+    const data = loadCounters();
+    let value = data[key] || 0;
+    value = Math.max(0, value + delta);
+    data[key] = value;
+    saveCounters(data);
+    renderCounter(key, value, target);
+  }
+
+  function resetAllCounters() {
+    if (!confirm('متأكد إنك عايز تصفّر كل العدادات؟')) return;
+    saveCounters({});
+    document.querySelectorAll('.counter').forEach(wrap => {
+      const key = wrap.dataset.key;
+      const target = Number(wrap.dataset.target);
+      renderCounter(key, 0, target);
+    });
+  }
+
+  const WEIGHT_KEY = 'workout-max-weights';
+
+  function loadWeights() {
+    try {
+      const raw = localStorage.getItem(WEIGHT_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveWeight(key, value) {
+    const data = loadWeights();
+    if (value === '' || value === null) {
+      delete data[key];
+    } else {
+      data[key] = value;
+    }
+    localStorage.setItem(WEIGHT_KEY, JSON.stringify(data));
+  }
+
+  function applyWeights() {
+    const data = loadWeights();
+    document.querySelectorAll('.weight-input').forEach(input => {
+      const key = input.dataset.key;
+      if (data[key] !== undefined) input.value = data[key];
+    });
+  }
+
+  function setHingeChoice(key, value, btn) {
+    localStorage.setItem(key, value);
+    const toggle = btn.closest('.hinge-toggle');
+    toggle.querySelectorAll('.hinge-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function applyHingeChoices() {
+    document.querySelectorAll('.hinge-toggle').forEach(toggle => {
+      const key = toggle.dataset.key;
+      const saved = localStorage.getItem(key);
+      if (saved) {
+        const btn = toggle.querySelector('.hinge-btn[data-value="' + saved + '"]');
+        if (btn) btn.classList.add('active');
+      }
+    });
+  }
+
+  // Which exercise keys belong to each day
+  const DAY_EXERCISES = {
+    1: Array.from({length: 9},  (_, i) => 'ex-' + (i + 1)),   // ex-1 .. ex-9
+    2: Array.from({length: 10}, (_, i) => 'ex-' + (i + 10)),  // ex-10 .. ex-19
+    3: Array.from({length: 10}, (_, i) => 'ex-' + (i + 20)),  // ex-20 .. ex-29
+  };
+
+  // Reset a day's set-counters back to 0 (removes line-through / done state)
+  function resetDayCounters(day) {
+    const keys = DAY_EXERCISES[day] || [];
+    const data = loadCounters();
+    keys.forEach(key => { data[key] = 0; });
+    saveCounters(data);
+    keys.forEach(key => {
+      const wrap = document.querySelector('.counter[data-key="' + key + '"]');
+      if (!wrap) return;
+      const target = Number(wrap.dataset.target);
+      renderCounter(key, 0, target);
+    });
+  }
+
+  function toggleDay(day, checkbox) {
+    if (checkbox.checked) {
+      localStorage.setItem('active-day', String(day));
+      // Reset the other two days back to default (sets + line-through)
+      [1, 2, 3].forEach(d => {
+        if (d !== day) resetDayCounters(d);
+      });
+      incrementPlayCount(day);
+      setLastDate(day);
+    } else {
+      localStorage.removeItem('active-day');
+    }
+    applyActiveDay();
+  }
+
+  function applyActiveDay() {
+    const active = localStorage.getItem('active-day');
+    document.querySelectorAll('.day-toggle-input').forEach(input => {
+      const isActive = active !== null && input.dataset.day === active;
+      input.checked = isActive;
+      const card = document.getElementById('day-card-' + input.dataset.day);
+      if (card) card.classList.toggle('active-day', isActive);
+    });
+  }
+
+  // ---- Play counters (times each day was marked as played) ----
+  const PLAY_COUNT_KEY = 'workout-play-counts';
+
+  function loadPlayCounts() {
+    try {
+      const raw = localStorage.getItem(PLAY_COUNT_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function savePlayCounts(data) {
+    localStorage.setItem(PLAY_COUNT_KEY, JSON.stringify(data));
+  }
+
+  function incrementPlayCount(day) {
+    const data = loadPlayCounts();
+    data[day] = (data[day] || 0) + 1;
+    savePlayCounts(data);
+    renderPlayCounts();
+  }
+
+  function renderPlayCounts() {
+    const data = loadPlayCounts();
+    let total = 0;
+    [1, 2, 3].forEach(d => {
+      const val = data[d] || 0;
+      total += val;
+      const el = document.getElementById('pc-' + d);
+      if (el) el.textContent = val;
+    });
+    const totalEl = document.getElementById('pc-total');
+    if (totalEl) totalEl.textContent = total;
+  }
+
+  // ---- Last played date (persists until the day is activated again) ----
+  const LAST_DATE_KEY = 'workout-last-dates';
+  const ARABIC_WEEKDAYS = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+
+  function loadLastDates() {
+    try {
+      const raw = localStorage.getItem(LAST_DATE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveLastDates(data) {
+    localStorage.setItem(LAST_DATE_KEY, JSON.stringify(data));
+  }
+
+  function formatArabicDate(date) {
+    const weekday = ARABIC_WEEKDAYS[date.getDay()];
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    return weekday + ' ' + day + '/' + month;
+  }
+
+  function setLastDate(day) {
+    const data = loadLastDates();
+    data[day] = formatArabicDate(new Date());
+    saveLastDates(data);
+    renderLastDates();
+  }
+
+  function renderLastDates() {
+    const data = loadLastDates();
+    [1, 2, 3].forEach(d => {
+      const el = document.getElementById('last-date-' + d);
+      if (!el) return;
+      if (data[d]) {
+        el.textContent = '🗓 آخر مرة: ' + data[d];
+        el.classList.add('show');
+      } else {
+        el.textContent = '';
+        el.classList.remove('show');
+      }
+    });
+  }
+
+  // ---- Export / Import all saved data (backup to a JSON file) ----
+  function collectHingeKeys() {
+    return Array.from(document.querySelectorAll('.hinge-toggle')).map(t => t.dataset.key);
+  }
+
+  function exportData() {
+    const backup = {
+      exportedAt: formatArabicDate(new Date()),
+      [STORAGE_KEY]: localStorage.getItem(STORAGE_KEY),
+      [WEIGHT_KEY]: localStorage.getItem(WEIGHT_KEY),
+      [PLAY_COUNT_KEY]: localStorage.getItem(PLAY_COUNT_KEY),
+      [LAST_DATE_KEY]: localStorage.getItem(LAST_DATE_KEY),
+      'active-day': localStorage.getItem('active-day'),
+      hinge: {}
+    };
+    collectHingeKeys().forEach(key => {
+      backup.hinge[key] = localStorage.getItem(key);
+    });
+
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'workout-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function importData(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const backup = JSON.parse(reader.result);
+        if (!confirm('استيراد البيانات ده هيستبدل كل العدادات والتواريخ الحالية. متأكد؟')) return;
+
+        if (backup[STORAGE_KEY] !== undefined && backup[STORAGE_KEY] !== null) {
+          localStorage.setItem(STORAGE_KEY, backup[STORAGE_KEY]);
+        }
+        if (backup[WEIGHT_KEY] !== undefined && backup[WEIGHT_KEY] !== null) {
+          localStorage.setItem(WEIGHT_KEY, backup[WEIGHT_KEY]);
+        }
+        if (backup[PLAY_COUNT_KEY] !== undefined && backup[PLAY_COUNT_KEY] !== null) {
+          localStorage.setItem(PLAY_COUNT_KEY, backup[PLAY_COUNT_KEY]);
+        }
+        if (backup[LAST_DATE_KEY] !== undefined && backup[LAST_DATE_KEY] !== null) {
+          localStorage.setItem(LAST_DATE_KEY, backup[LAST_DATE_KEY]);
+        }
+        if (backup['active-day'] !== undefined && backup['active-day'] !== null) {
+          localStorage.setItem('active-day', backup['active-day']);
+        } else {
+          localStorage.removeItem('active-day');
+        }
+        if (backup.hinge) {
+          Object.keys(backup.hinge).forEach(key => {
+            if (backup.hinge[key] !== null && backup.hinge[key] !== undefined) {
+              localStorage.setItem(key, backup.hinge[key]);
+            }
+          });
+        }
+
+        // Re-render everything from the restored data
+        document.querySelectorAll('.counter').forEach(wrap => {
+          const key = wrap.dataset.key;
+          const target = Number(wrap.dataset.target);
+          const data = loadCounters();
+          renderCounter(key, data[key] || 0, target);
+        });
+        applyActiveDay();
+        applyHingeChoices();
+        applyWeights();
+        renderPlayCounts();
+        renderLastDates();
+
+        alert('تم استيراد البيانات بنجاح ✅');
+      } catch (e) {
+        alert('الملف ده مش صالح، تأكد إنه ملف الباك أب الصح.');
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  // On load, restore saved counts
+  document.addEventListener('DOMContentLoaded', () => {
+    const data = loadCounters();
+    document.querySelectorAll('.counter').forEach(wrap => {
+      const key = wrap.dataset.key;
+      const target = Number(wrap.dataset.target);
+      const value = data[key] || 0;
+      renderCounter(key, value, target);
+    });
+    applyActiveDay();
+    applyHingeChoices();
+    applyWeights();
+    renderPlayCounts();
+    renderLastDates();
+  });
+</script>
+
+</body>
+</html>
